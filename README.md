@@ -27,6 +27,7 @@ Pre-requisites:
 ```shell
 node .
 node . -t F -z 75015,fr
+node . -l # run latest configuration
 ```
 
 ## Run as a global cli tool

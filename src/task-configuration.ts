@@ -1,15 +1,15 @@
 import {TemperatureUnit} from "./types/temperature-unit";
 
-type TaskConfigurationProps = {
+export type TaskConfigurationProps = {
     location?: string;
     useGeolocation?: boolean;
     temperatureUnit?: TemperatureUnit;
 };
 
 export default class TaskConfiguration {
-    public readonly location: string;
-    public readonly useGeolocation: boolean;
-    public readonly temperatureUnit: TemperatureUnit;
+    public location: string;
+    public useGeolocation: boolean;
+    public temperatureUnit: TemperatureUnit;
 
     constructor(props: TaskConfigurationProps) {
         this.location = props?.location ?? "";

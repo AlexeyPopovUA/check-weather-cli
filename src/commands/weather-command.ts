@@ -1,15 +1,16 @@
-import AbstractTaskExecutor, {TaskExecutorProps} from "./abstract-task-executor";
-
-type Props = TaskExecutorProps & {
-
-}
+import AbstractTaskExecutor from "./abstract-task-executor";
 
 export default class WeatherCommand extends AbstractTaskExecutor {
     public static serviceBaseURL: string = "";
 
     async execute() {
-        await new Promise(r => setTimeout(r, 2000));
-        console.log(`WeatherCommand Y`);
-        return {};
+        // fetch the weather data
+        return {
+            title: this.taskConfiguration.location,
+            humidity: "0",
+            pressure: "0",
+            temperature: "30",
+            temperatureUnit: this.taskConfiguration.temperatureUnit
+        };
     }
 }

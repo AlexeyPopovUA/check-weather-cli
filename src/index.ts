@@ -5,18 +5,21 @@ import yargs from "yargs";
 import {hideBin} from "yargs/helpers";
 
 import options from "./options";
-import CheckWeatherCommand from "./commands/check-weather-command";
-import TaskConfiguration from "./task-configuration";
+import TaskConfiguration, {TaskConfigurationProps} from "./task-configuration";
 import {TemperatureUnit} from "./types/temperature-unit";
+import OutputWeatherToStdoutCommand from "./commands/output-weather-to-stdout-command";
+import WeatherCommand from "./commands/weather-command";
+import ImportTasksFromFileCommand from "./commands/import-tasks-from-file-command";
+import GeolocationCommand from "./commands/geolocation-command";
 
 (async () => {
     /**
      * No flags = display the prompt
      * With flags = no prompt
      */
-    const needsPrompt = hideBin(process.argv).length === 0;
+    const displayPrompt = hideBin(process.argv).length === 0;
 
-    if (needsPrompt) {
+    if (displayPrompt) {
         const answers = await inquirer.prompt(Object.values(options));
 
         Object.entries(answers).forEach(([key, value]) => {
@@ -26,15 +29,36 @@ import {TemperatureUnit} from "./types/temperature-unit";
 
     const argv = await yargs(hideBin(process.argv)).options(options).parse();
 
-    const res = await new CheckWeatherCommand({
-        taskConfiguration: new TaskConfiguration({
-            temperatureUnit: argv["temperature"] as TemperatureUnit,
-            location: argv["zip"] as string
-        })
-    }).execute();
-    //await getLocationByRequest();
-    //await getTemperatureAtLocation(argv["zip"] as string, argv["temperature"] as TemperatureUnit);
+    const cfgs: TaskConfigurationProps[] = [];
 
-    console.log(`Hello, ${JSON.stringify(argv, null, 4)}!`);
-    console.log(`Res = ${JSON.stringify(res, null, 4)}`);
+    // check the "latest" flag then get cfgs
+    if (argv["latest"]) {
+        const cfgsFromFile = await new ImportTasksFromFileCommand({filePath: "~/.check-weather-cli/latest.json"}).execute();
+        Array.prototype.push.apply(cfgs, cfgsFromFile);
+    } else if (argv["import"]) {
+        const cfgsFromFile = await new ImportTasksFromFileCommand({filePath: argv["import"] as string}).execute();
+        Array.prototype.push.apply(cfgs, cfgsFromFile);
+    } else {
+        cfgs.push({
+            temperatureUnit: argv["temperature"] as TemperatureUnit,
+            location: argv["zip"] as string,
+            useGeolocation: argv["use-geolocation"] as boolean
+        });
+    }
+
+    const taskConfigurations = cfgs.map(cfg => new TaskConfiguration({
+        temperatureUnit: cfg.temperatureUnit,
+        location: cfg.location,
+        useGeolocation: cfg.useGeolocation
+    }));
+
+    // if no location - detect it and then request the weather stats
+    const weatherRecords = await Promise.all(taskConfigurations.map(async taskConfiguration => {
+        if (!taskConfiguration.location) {
+            taskConfiguration.location = await new GeolocationCommand({taskConfiguration}).execute();
+        }
+        return new WeatherCommand({taskConfiguration}).execute();
+    }))
+
+    await new OutputWeatherToStdoutCommand({weatherRecords}).execute();
 })();
