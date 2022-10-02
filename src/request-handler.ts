@@ -5,7 +5,7 @@ import TaskConfiguration, {TaskConfigurationProps} from "./task-configuration";
 import ImportTasksFromFileCommand from "./commands/import-tasks-from-file-command";
 import cfg from "./configuration/configuration";
 import OutputTasksToFileCommand from "./commands/output-tasks-to-file-command";
-import GeolocationCommand from "./commands/geolocation-command";
+import DetectLocationZipCommand from "./commands/detect-location-zip-command";
 import WeatherCommand from "./commands/weather-command";
 import OutputWeatherToStdoutCommand from "./commands/output-weather-to-stdout-command";
 import {WeatherRecord} from "./types/weather";
@@ -44,7 +44,7 @@ export default class RequestHandler {
     private static async getWeatherRecords(taskConfigurations: TaskConfiguration[]) {
         return await Promise.all(taskConfigurations.map(async taskConfiguration => {
             if (!taskConfiguration.zip && !taskConfiguration.cityName && taskConfiguration.useGeolocation) {
-                taskConfiguration.zip = await new GeolocationCommand({taskConfiguration}).execute();
+                taskConfiguration.zip = await new DetectLocationZipCommand().execute();
             } else if (!taskConfiguration.zip && !taskConfiguration.cityName && !taskConfiguration.useGeolocation) {
                 throw new Error("Cannot detect location when it is disabled");
             }

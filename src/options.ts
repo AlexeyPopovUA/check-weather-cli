@@ -35,7 +35,7 @@ const options: {[key: string]: CliOption} = {
     },
     zip: {
         inquirer: {
-            message: 'What\'s the zipcode? (Example: 75015,fr)',
+            message: 'What\'s the <zipcode,country code>? (Example: 75015,fr)',
             name: 'zip',
             type: 'input',
             // ask only if city is skipped
