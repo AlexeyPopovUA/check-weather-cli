@@ -23,8 +23,6 @@ export default class OutputTasksToFileCommand extends AbstractCommand {
     }
 
     async execute(): Promise<void> {
-        console.log("OutputTasksToFileCommand");
-
         const body = {taskConfigurations: this.taskConfigurations.map(task => task.getSnapshot())};
 
         // move outside or simplify

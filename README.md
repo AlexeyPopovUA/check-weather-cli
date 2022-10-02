@@ -28,6 +28,7 @@ Pre-requisites:
 node .
 node . -t F -z 75015,fr
 node . -l # run latest configuration
+node . --import ~/.check-weather-cli/imp-example.json # import the json file
 ```
 
 ## Run as a global cli tool

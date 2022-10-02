@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 
+import os from "os";
+import path from "path";
 import inquirer from "inquirer";
 import yargs from "yargs";
 import {hideBin} from "yargs/helpers";
 
+import cfg from "./configuration/configuration";
 import options from "./options";
 import TaskConfiguration, {TaskConfigurationProps} from "./task-configuration";
 import {TemperatureUnit} from "./types/temperature-unit";
@@ -34,7 +37,7 @@ import OutputTasksToFileCommand from "./commands/output-tasks-to-file-command";
 
     // check the "latest" flag then get cfgs
     if (argv["latest"]) {
-        const cfgsFromFile = await new ImportTasksFromFileCommand({filePath: "~/.check-weather-cli/latest.json"}).execute();
+        const cfgsFromFile = await new ImportTasksFromFileCommand({filePath: path.resolve(os.homedir(), cfg.SAVING_DIR, cfg.LATEST_FILE)}).execute();
         Array.prototype.push.apply(cfgs, cfgsFromFile);
     } else if (argv["import"]) {
         const cfgsFromFile = await new ImportTasksFromFileCommand({filePath: argv["import"] as string}).execute();
@@ -60,7 +63,7 @@ import OutputTasksToFileCommand from "./commands/output-tasks-to-file-command";
 
     // if no location - detect it and then request the weather stats
     const weatherRecords = await Promise.all(taskConfigurations.map(async taskConfiguration => {
-        if (!taskConfiguration.location) {
+        if (!taskConfiguration.location && taskConfiguration.useGeolocation !== false) {
             taskConfiguration.location = await new GeolocationCommand({taskConfiguration}).execute();
         }
         return new WeatherCommand({taskConfiguration}).execute();
