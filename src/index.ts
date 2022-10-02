@@ -11,6 +11,7 @@ import OutputWeatherToStdoutCommand from "./commands/output-weather-to-stdout-co
 import WeatherCommand from "./commands/weather-command";
 import ImportTasksFromFileCommand from "./commands/import-tasks-from-file-command";
 import GeolocationCommand from "./commands/geolocation-command";
+import OutputTasksToFileCommand from "./commands/output-tasks-to-file-command";
 
 (async () => {
     /**
@@ -51,6 +52,11 @@ import GeolocationCommand from "./commands/geolocation-command";
         location: cfg.location,
         useGeolocation: cfg.useGeolocation
     }));
+
+    // do not save for importing and querying latest
+    if (!argv["latest"] && !argv["import"]) {
+        await new OutputTasksToFileCommand({taskConfigurations}).execute();
+    }
 
     // if no location - detect it and then request the weather stats
     const weatherRecords = await Promise.all(taskConfigurations.map(async taskConfiguration => {

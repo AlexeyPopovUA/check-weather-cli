@@ -17,7 +17,7 @@ export default class TaskConfiguration {
         this.temperatureUnit = props?.temperatureUnit ?? "C";
     }
 
-    private getSnapshot() {
+    getSnapshot() {
         return {
             location: this.location,
             useGeolocation: this.useGeolocation,
