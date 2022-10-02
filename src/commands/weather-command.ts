@@ -22,8 +22,10 @@ type WeatherResponse = {
 
 export default class WeatherCommand extends AbstractTaskExecutor {
     public static serviceBaseURL: string = "https://api.openweathermap.org/data/2.5/weather";
+
     //https://api.openweathermap.org/data/2.5/weather?zip={zip code},{country code}&appid={API key}
     public static weatherByLocationURL: string = "${serviceBaseURL}?zip=${location}&units=${units}&appid=${apiKey}";
+
     //https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
     public static weatherByCityNameURL: string = "${serviceBaseURL}?q=${cityName}&appid=${apiKey}";
 

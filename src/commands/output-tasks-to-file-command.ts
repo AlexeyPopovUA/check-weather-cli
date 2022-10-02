@@ -13,6 +13,7 @@ type Props = {
 
 export default class OutputTasksToFileCommand extends AbstractCommand {
     private readonly filePath: string;
+
     private readonly taskConfigurations: TaskConfiguration[];
 
     constructor(props: Props) {

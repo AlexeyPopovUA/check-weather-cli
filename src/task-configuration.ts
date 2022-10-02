@@ -8,7 +8,9 @@ export type TaskConfigurationProps = {
 
 export default class TaskConfiguration {
     public location: string;
+
     public useGeolocation: boolean;
+
     public temperatureUnit: TemperatureUnits;
 
     constructor(props: TaskConfigurationProps) {
