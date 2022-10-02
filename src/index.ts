@@ -9,7 +9,7 @@ import {hideBin} from "yargs/helpers";
 import cfg from "./configuration/configuration";
 import options from "./options";
 import TaskConfiguration, {TaskConfigurationProps} from "./task-configuration";
-import {TemperatureUnit} from "./types/temperature-unit";
+import {TemperatureUnits} from "./types/units";
 import OutputWeatherToStdoutCommand from "./commands/output-weather-to-stdout-command";
 import WeatherCommand from "./commands/weather-command";
 import ImportTasksFromFileCommand from "./commands/import-tasks-from-file-command";
@@ -44,7 +44,7 @@ import OutputTasksToFileCommand from "./commands/output-tasks-to-file-command";
         Array.prototype.push.apply(cfgs, cfgsFromFile);
     } else {
         cfgs.push({
-            temperatureUnit: argv["temperature"] as TemperatureUnit,
+            temperatureUnit: argv["temperature"] as TemperatureUnits,
             location: argv["zip"] as string,
             useGeolocation: argv["use-geolocation"] as boolean
         });

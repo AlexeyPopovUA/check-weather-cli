@@ -1,13 +1,7 @@
 import boxen from "boxen";
-import AbstractCommand from "./abstract-command";
 
-type WeatherRecord = {
-    title: string;
-    temperature: string;
-    temperatureUnit: string;
-    humidity: string;
-    pressure: string;
-};
+import AbstractCommand from "./abstract-command";
+import {WeatherRecord} from "../types/weather";
 
 type Props = {
     weatherRecords: WeatherRecord[];
@@ -26,7 +20,10 @@ export default class OutputWeatherToStdoutCommand extends AbstractCommand {
         return [
             `Temperature: ${record.temperature} ${record.temperatureUnit}`,
             `Humidity: ${record.humidity} %`,
-            `Pressure: ${record.pressure}`
+            `Wind speed: ${record.windSpeed} ${record.windSpeedUnit}`,
+            `Pressure: ${record.pressure} hPa`,
+            ``,
+            ...record.weather
         ].join("\n");
     }
 

@@ -1,15 +1,15 @@
-import {TemperatureUnit} from "./types/temperature-unit";
+import {TemperatureUnits} from "./types/units";
 
 export type TaskConfigurationProps = {
     location?: string;
     useGeolocation?: boolean;
-    temperatureUnit?: TemperatureUnit;
+    temperatureUnit?: TemperatureUnits;
 };
 
 export default class TaskConfiguration {
     public location: string;
     public useGeolocation: boolean;
-    public temperatureUnit: TemperatureUnit;
+    public temperatureUnit: TemperatureUnits;
 
     constructor(props: TaskConfigurationProps) {
         this.location = props?.location ?? "";
@@ -27,9 +27,5 @@ export default class TaskConfiguration {
 
     toString() {
         return JSON.stringify(this.getSnapshot());
-    }
-
-    toFormattedString() {
-        return JSON.stringify(this.getSnapshot(), null, 4);
     }
 }

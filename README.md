@@ -35,7 +35,7 @@ node . --import ~/.check-weather-cli/imp-example.json # import the json file
 
 ```shell
 npm i -g .
-check-weather-cli -t F -z 75015,fr
+check-weather-cli -t C -z 75015,fr
 ```
 
 ## Test
