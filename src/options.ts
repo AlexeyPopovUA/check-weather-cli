@@ -1,14 +1,23 @@
 import {Options} from "yargs";
-import {Question} from "inquirer";
+import {DistinctQuestion} from "inquirer";
 
 import {TemperatureUnits} from "./types/units";
 
 export type CliOption = {
     yargs: Options;
-    inquirer?: Question;
+    inquirer?: DistinctQuestion<CLIParams>;
 };
 
-const options: {[k: string]: CliOption} = {
+export type CLIParams = {
+    import: string;
+    latest: string;
+    zip: string;
+    city: string;
+    temperature: TemperatureUnits;
+    geolocation: string;
+}
+
+const options: {[key: string]: CliOption} = {
     import: {
         yargs: {
             describe: 'Import options from file',
@@ -28,7 +37,11 @@ const options: {[k: string]: CliOption} = {
         inquirer: {
             message: 'What\'s the zipcode? (Example: 75015,fr)',
             name: 'zip',
-            type: 'input'
+            type: 'input',
+            // ask only if city is skipped
+            when: async (answers) => {
+                return !answers.city;
+            }
         },
         yargs: {
             describe: 'Query city by a zip code or a city name',
@@ -41,7 +54,11 @@ const options: {[k: string]: CliOption} = {
         inquirer: {
             message: 'What\'s the city name?',
             name: 'city',
-            type: 'string'
+            type: 'input',
+            // ask only if zip is skipped
+            when: async (answers) => {
+                return !answers.zip;
+            }
         },
         yargs: {
             describe: 'Query by a city name',
@@ -56,7 +73,6 @@ const options: {[k: string]: CliOption} = {
             name: 'temperature',
             default: "C",
             type: "list",
-            // @ts-ignore
             choices: ["C", "F"]
         },
         yargs: {
@@ -75,14 +91,5 @@ const options: {[k: string]: CliOption} = {
         }
     }
 };
-
-export type CLIParams = {
-    import: string;
-    latest: string;
-    zip: string;
-    city: string;
-    temperature: TemperatureUnits;
-    geolocation: string;
-}
 
 export default options;
