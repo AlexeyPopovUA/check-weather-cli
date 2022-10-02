@@ -1,29 +1,34 @@
 import {TemperatureUnits} from "./types/units";
 
 export type TaskConfigurationProps = {
-    location?: string;
+    zip?: string;
+    cityName?: string;
     useGeolocation?: boolean;
     temperatureUnit?: TemperatureUnits;
 };
 
 export default class TaskConfiguration {
-    public location: string;
+    public zip: string;
+
+    public cityName: string;
 
     public useGeolocation: boolean;
 
     public temperatureUnit: TemperatureUnits;
 
     constructor(props: TaskConfigurationProps) {
-        this.location = props?.location ?? "";
+        this.zip = props?.zip ?? "";
+        this.cityName = props?.cityName ?? "";
         this.useGeolocation = props?.useGeolocation ?? true;
         this.temperatureUnit = props?.temperatureUnit ?? "C";
     }
 
     getSnapshot(): TaskConfigurationProps {
         return {
-            location: this.location,
+            zip: this.zip,
+            cityName: this.cityName,
             useGeolocation: this.useGeolocation,
-            temperatureUnit: this.temperatureUnit,
+            temperatureUnit: this.temperatureUnit
         };
     }
 

@@ -23,14 +23,16 @@ export default class RequestHandler {
         } else {
             cfgs = [{
                 temperatureUnit: argv.temperature,
-                location: argv.zip,
+                zip: argv.zip,
+                cityName: argv.city,
                 useGeolocation: !!argv.geolocation
             }];
         }
 
         return cfgs.map(cfg => new TaskConfiguration({
             temperatureUnit: cfg.temperatureUnit,
-            location: cfg.location,
+            zip: cfg.zip,
+            cityName: cfg.cityName,
             useGeolocation: cfg.useGeolocation
         }));
     }
@@ -41,9 +43,9 @@ export default class RequestHandler {
 
     private static async getWeatherRecords(taskConfigurations: TaskConfiguration[]) {
         return await Promise.all(taskConfigurations.map(async taskConfiguration => {
-            if (!taskConfiguration.location && taskConfiguration.useGeolocation) {
-                taskConfiguration.location = await new GeolocationCommand({taskConfiguration}).execute();
-            } else if (!taskConfiguration.location && taskConfiguration.useGeolocation) {
+            if (!taskConfiguration.zip && !taskConfiguration.cityName && taskConfiguration.useGeolocation) {
+                taskConfiguration.zip = await new GeolocationCommand({taskConfiguration}).execute();
+            } else if (!taskConfiguration.zip && !taskConfiguration.cityName && !taskConfiguration.useGeolocation) {
                 throw new Error("Cannot detect location when it is disabled");
             }
             return new WeatherCommand({taskConfiguration}).execute();

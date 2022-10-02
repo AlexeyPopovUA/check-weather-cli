@@ -24,23 +24,38 @@ export default class WeatherCommand extends AbstractTaskExecutor {
     public static serviceBaseURL: string = "https://api.openweathermap.org/data/2.5/weather";
 
     //https://api.openweathermap.org/data/2.5/weather?zip={zip code},{country code}&appid={API key}
-    public static weatherByLocationURL: string = "${serviceBaseURL}?zip=${location}&units=${units}&appid=${apiKey}";
+    public static weatherByLocationURL: string = "${serviceBaseURL}?zip=${zip}&units=${units}&appid=${apiKey}";
 
     //https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
-    public static weatherByCityNameURL: string = "${serviceBaseURL}?q=${cityName}&appid=${apiKey}";
+    public static weatherByCityNameURL: string = "${serviceBaseURL}?q=${cityName}&units=${units}&appid=${apiKey}";
 
     async execute(): Promise<WeatherRecord> {
         const unitSystem = this.taskConfiguration.temperatureUnit === "C" ? "metric": "imperial";
-        const response = await got.get(template(WeatherCommand.weatherByLocationURL)({
-            serviceBaseURL: WeatherCommand.serviceBaseURL,
-            location: this.taskConfiguration.location,
-            apiKey: cfg.OPEN_WEATHER_API_KEY,
-            units: unitSystem
-        })).json<WeatherResponse>();
+        let title, response;
+
+        if (this.taskConfiguration.zip) {
+            response = await got.get(template(WeatherCommand.weatherByLocationURL)({
+                serviceBaseURL: WeatherCommand.serviceBaseURL,
+                zip: this.taskConfiguration.zip,
+                apiKey: cfg.OPEN_WEATHER_API_KEY,
+                units: unitSystem
+            })).json<WeatherResponse>();
+
+            title = this.taskConfiguration.zip;
+        } else {
+            response = await got.get(template(WeatherCommand.weatherByCityNameURL)({
+                serviceBaseURL: WeatherCommand.serviceBaseURL,
+                cityName: this.taskConfiguration.cityName,
+                apiKey: cfg.OPEN_WEATHER_API_KEY,
+                units: unitSystem
+            })).json<WeatherResponse>();
+
+            title = this.taskConfiguration.cityName;
+        }
 
         // fetch the weather data
         return {
-            title: this.taskConfiguration.location,
+            title,
             humidity: response.main.humidity,
             pressure: response.main.pressure,
             temperature: response.main.temp,
