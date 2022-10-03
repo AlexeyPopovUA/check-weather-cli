@@ -5,7 +5,7 @@ import cfg from "../configuration/configuration";
 import AbstractTaskExecutor from "./abstract-task-executor";
 import {WeatherRecord} from "../types/weather";
 
-type WeatherResponse = {
+export type WeatherResponse = {
     weather: {
         main: string;
         description: string;

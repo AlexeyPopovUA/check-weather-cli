@@ -42,11 +42,11 @@ check-weather-cli -t C -z 75015,fr
 ```
 
 ## Test
-*TODO*
+
+```shell
+npm run test # unit and integration tests
+npm run test:coverage # unit and integration tests with coverage reports
+```
 
 ## TODOS
-
-turning off geo location
-shorter request errors 
-tests
 questions
