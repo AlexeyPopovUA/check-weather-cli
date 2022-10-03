@@ -77,3 +77,8 @@ check-weather-cli -t C -c Paris,fr
 npm run test # unit and integration tests
 npm run test:coverage # unit and integration tests with coverage reports
 ```
+
+## Extra
+
+[If you should deliver this application to users, what should you do?](/docs/distribution-preparation.md)
+[What could be done to improve the application?](/docs/improvements.md)
