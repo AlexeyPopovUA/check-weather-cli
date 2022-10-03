@@ -1,4 +1,4 @@
-import WeatherCommand, {WeatherResponse} from "../weather-command";
+import WeatherCommand from "../weather-command";
 import TaskConfiguration from "../../task-configuration";
 
 describe("WeatherCommand test", () => {

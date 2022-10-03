@@ -61,7 +61,7 @@ const options: {[key: string]: CliOption} = {
             }
         },
         yargs: {
-            describe: 'Query city by a zip code or a city name',
+            describe: 'Query by a <zip code, country code> combination',
             alias: "z",
             type: 'string',
             conflicts: "city"

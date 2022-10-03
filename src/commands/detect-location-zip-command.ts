@@ -21,7 +21,7 @@ export default class DetectLocationZipCommand extends AbstractCommand {
 
             return `${response.zip},${response.country_code}`;
         } catch (e) {
-            console.error((e as Error).message);
+            process.stderr.write(`${(e as Error).message}\n`);
             return "";
         }
     }

@@ -42,7 +42,9 @@ export default class ConfigurationsHandler {
             const answers = await inquirer.prompt(inquirerQuestions);
 
             Object.entries(answers).forEach(([key, value]) => {
-                value && args.push(`--${key}`, value);
+                if (value) {
+                    args.push(`--${key}`, value);
+                }
             });
         }
 

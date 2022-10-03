@@ -42,7 +42,7 @@ export default class RequestHandler {
     }
 
     private static async getWeatherRecords(taskConfigurations: TaskConfiguration[]) {
-        return await Promise.all(taskConfigurations.map(async taskConfiguration => {
+        return Promise.all(taskConfigurations.map(async taskConfiguration => {
             if (!taskConfiguration.zip && !taskConfiguration.cityName && taskConfiguration.useGeolocation) {
                 taskConfiguration.zip = await new DetectLocationZipCommand().execute();
             } else if (!taskConfiguration.zip && !taskConfiguration.cityName && !taskConfiguration.useGeolocation) {

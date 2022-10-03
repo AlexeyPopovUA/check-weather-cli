@@ -1,5 +1,6 @@
 # If you should deliver this application to users, what should you do?
 
+* Find out what actually users need :)
 * Automation of build, linting, testing, versioning and distribution
 * Better coverage with integration and unit tests 
 * API keys management (distribute with package or require configuring on consumer side)

@@ -20,7 +20,7 @@ export default class DetectLocationCityNameCommand extends AbstractCommand {
 
             return response.city;
         } catch (e) {
-            console.error((e as Error).message);
+            process.stderr.write(`${(e as Error).message}\n`);
             return "";
         }
     }

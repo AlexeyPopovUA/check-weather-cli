@@ -43,6 +43,6 @@ export default class OutputWeatherToStdoutCommand extends AbstractCommand {
             .join("\n");
         const mainBox = boxen(content, {title: 'Weather reports', titleAlignment: 'center', padding: 1});
 
-        console.log(mainBox);
+        process.stdout.write(`${mainBox}\n`);
     }
 }
