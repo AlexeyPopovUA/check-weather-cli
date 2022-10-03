@@ -25,6 +25,10 @@ npm run build # run the single build
 npm run watch # run the build in the watch mode
 ```
 
+Install, build, run tests demo:
+
+<img src="/docs/install-build-test.gif" alt="install-build-test"/>
+
 ## Run
 
 ```shell
@@ -39,6 +43,26 @@ node . -c Amsterdam # get weather for the Amsterdam city
 node . -l # run latest configuration (except imported file case) ~/.check-weather-cli/latest.json
 node . --import ./examples/imp-example.json # import multiple configurations from the json file
 ```
+
+Installation as a global cli tool and prompt scenarios demo:
+
+<img src="/docs/global-help-version-prompt.gif" alt="global-help-version-prompt"/>
+
+Importing from file demo:
+
+<img src="/docs/import.gif" alt="import"/>
+
+Basic error handling demo:
+
+<img src="/docs/error.gif" alt="error"/>
+
+Pure basic cli demo:
+
+<img src="/docs/pure-cli-basic.gif" alt="pure basic cli"/>
+
+Selection of city OR zip demo:
+
+<img src="/docs/pure-cli-c-vs-z.gif" alt="city or zip"/>
 
 ## Run as a global cli tool (Optional)
 
