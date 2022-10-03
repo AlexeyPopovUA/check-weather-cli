@@ -13,10 +13,15 @@ export default class DetectLocationCityNameCommand extends AbstractCommand {
     public static serviceURL: string = "http://api.ipapi.com/api/check?access_key=${apiKey}&fields=city";
 
     async execute(): Promise<string> {
-        const response = await got.get(template(DetectLocationCityNameCommand.serviceURL)({
-            apiKey: cfg.GEOLOCATION_API_KEY
-        })).json<GeolocationResponse>();
+        try {
+            const response = await got.get(template(DetectLocationCityNameCommand.serviceURL)({
+                apiKey: cfg.GEOLOCATION_API_KEY
+            })).json<GeolocationResponse>();
 
-        return response.city;
+            return response.city;
+        } catch (e) {
+            console.error((e as Error).message);
+            return "";
+        }
     }
 }

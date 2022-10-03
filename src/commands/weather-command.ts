@@ -30,39 +30,44 @@ export default class WeatherCommand extends AbstractTaskExecutor {
     public static weatherByCityNameURL: string = "${serviceBaseURL}?q=${cityName}&units=${units}&appid=${apiKey}";
 
     async execute(): Promise<WeatherRecord> {
-        const unitSystem = this.taskConfiguration.temperatureUnit === "C" ? "metric": "imperial";
         let title, response;
+        try {
+            const unitSystem = this.taskConfiguration.temperatureUnit === "C" ? "metric": "imperial";
 
-        if (this.taskConfiguration.zip) {
-            response = await got.get(template(WeatherCommand.weatherByLocationURL)({
-                serviceBaseURL: WeatherCommand.serviceBaseURL,
-                zip: this.taskConfiguration.zip,
-                apiKey: cfg.OPEN_WEATHER_API_KEY,
-                units: unitSystem
-            })).json<WeatherResponse>();
+            if (this.taskConfiguration.zip) {
+                title = this.taskConfiguration.zip;
+                response = await got.get(template(WeatherCommand.weatherByLocationURL)({
+                    serviceBaseURL: WeatherCommand.serviceBaseURL,
+                    zip: this.taskConfiguration.zip,
+                    apiKey: cfg.OPEN_WEATHER_API_KEY,
+                    units: unitSystem
+                })).json<WeatherResponse>();
+            } else {
+                title = this.taskConfiguration.cityName;
+                response = await got.get(template(WeatherCommand.weatherByCityNameURL)({
+                    serviceBaseURL: WeatherCommand.serviceBaseURL,
+                    cityName: this.taskConfiguration.cityName,
+                    apiKey: cfg.OPEN_WEATHER_API_KEY,
+                    units: unitSystem
+                })).json<WeatherResponse>();
+            }
 
-            title = this.taskConfiguration.zip;
-        } else {
-            response = await got.get(template(WeatherCommand.weatherByCityNameURL)({
-                serviceBaseURL: WeatherCommand.serviceBaseURL,
-                cityName: this.taskConfiguration.cityName,
-                apiKey: cfg.OPEN_WEATHER_API_KEY,
-                units: unitSystem
-            })).json<WeatherResponse>();
-
-            title = this.taskConfiguration.cityName;
+            // fetch the weather data
+            return {
+                title: title,
+                humidity: response.main.humidity,
+                pressure: response.main.pressure,
+                temperature: response.main.temp,
+                windSpeed: response.wind.speed,
+                windSpeedUnit: unitSystem === "metric" ? "meter/sec" : "miles/hour",
+                weather: response.weather.map(item => `${item.main}: ${item.description}`),
+                temperatureUnit: this.taskConfiguration.temperatureUnit
+            };
+        } catch (e) {
+            return {
+                title: title ? title : "Error",
+                errorMessage: (e as Error).message
+            };
         }
-
-        // fetch the weather data
-        return {
-            title,
-            humidity: response.main.humidity,
-            pressure: response.main.pressure,
-            temperature: response.main.temp,
-            windSpeed: response.wind.speed,
-            windSpeedUnit: unitSystem === "metric" ? "meter/sec" : "miles/hour",
-            weather: response.weather.map(item => `${item.main}: ${item.description}`),
-            temperatureUnit: this.taskConfiguration.temperatureUnit
-        };
     }
 }

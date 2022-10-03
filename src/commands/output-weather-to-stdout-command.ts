@@ -17,14 +17,18 @@ export default class OutputWeatherToStdoutCommand extends AbstractCommand {
     }
 
     static getRecordContent(record: WeatherRecord): string {
-        return [
-            `Temperature: ${record.temperature} ${record.temperatureUnit}`,
-            `Humidity: ${record.humidity} %`,
-            `Wind speed: ${record.windSpeed} ${record.windSpeedUnit}`,
-            `Pressure: ${record.pressure} hPa`,
-            ``,
-            ...record.weather
-        ].join("\n");
+        if (record.errorMessage) {
+            return record.errorMessage;
+        } else {
+            return [
+                `Temperature: ${record.temperature} ${record.temperatureUnit}`,
+                `Humidity: ${record.humidity} %`,
+                `Wind speed: ${record.windSpeed} ${record.windSpeedUnit}`,
+                `Pressure: ${record.pressure} hPa`,
+                ``,
+                ...(record?.weather ?? [])
+            ].join("\n");
+        }
     }
 
     async execute(): Promise<void> {
