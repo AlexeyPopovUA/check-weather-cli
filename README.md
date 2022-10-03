@@ -17,6 +17,7 @@ Pre-requisites:
 * install the latest LTS nodejs 16. (Use NVM manager or any other for convenience)
 * install all dependencies ```npm i```
 * run single build ```npm run build```
+* add ```.env``` file with API keys to the ```env/``` directory. See ```env/.env.example```
 
 ## Build
 
@@ -78,7 +79,16 @@ npm run test # unit and integration tests
 npm run test:coverage # unit and integration tests with coverage reports
 ```
 
+## Linting
+
+Run ESLint with rules copied from [eslint-config-proton](https://github.com/ProtonMail/WebClients/tree/main/packages/eslint-config-proton)
+
+```shell
+npm run lint 
+```
+
 ## Extra
 
-[If you should deliver this application to users, what should you do?](/docs/distribution-preparation.md)
-[What could be done to improve the application?](/docs/improvements.md)
+* [If you should deliver this application to users, what should you do?](/docs/distribution-preparation.md)
+* [What could be done to improve the application?](/docs/improvements.md)
+* [Wy did you use these packages?](/docs/packages.md)
