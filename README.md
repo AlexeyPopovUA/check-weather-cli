@@ -27,8 +27,11 @@ Pre-requisites:
 ```shell
 node .
 node . -t F -z 75015,fr
+node . -t F -c Amsterdam
+node . -c Amsterdam
+node . -g # turn off geolocation
 node . -l # run latest configuration
-node . --import ~/.check-weather-cli/imp-example.json # import the json file
+node . --import ./examples/imp-example.json # import the json file
 ```
 
 ## Run as a global cli tool
@@ -40,3 +43,10 @@ check-weather-cli -t C -z 75015,fr
 
 ## Test
 *TODO*
+
+## TODOS
+
+turning off geo location
+shorter request errors 
+tests
+questions
