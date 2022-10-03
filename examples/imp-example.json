@@ -1,0 +1,28 @@
+{
+    "taskConfigurations": [
+        {
+            "zip": "94040,us",
+            "cityName": "",
+            "useGeolocation": false,
+            "temperatureUnit": "F"
+        },
+        {
+            "zip": "",
+            "cityName": "",
+            "useGeolocation": true,
+            "temperatureUnit": "C"
+        },
+        {
+            "zip": "75015,fr",
+            "cityName": "",
+            "useGeolocation": true,
+            "temperatureUnit": "C"
+        },
+        {
+            "zip": "",
+            "cityName": "Amsterdam",
+            "useGeolocation": true,
+            "temperatureUnit": "C"
+        }
+    ]
+}
