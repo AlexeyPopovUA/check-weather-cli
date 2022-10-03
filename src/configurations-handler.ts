@@ -10,26 +10,33 @@ import DetectLocationCityNameCommand from "./commands/detect-location-city-name-
 export default class ConfigurationsHandler {
     static async handleRequest(): Promise<CLIArguments> {
         const args = hideBin(process.argv);
+
+        const turnOffGeoLocation = args.indexOf("--geolocation") !== -1 || args.indexOf("-g") !== -1;
         /**
-         * No flags = display the prompt
+         * No flags (except "geolocation") = display the prompt
          * With flags = no prompt
          */
-        const displayPrompt = args.length === 0 /*|| (args.length === 1 && (args.includes("--geolocation") || args.includes("-g") || args.includes("--no-geolocation")))*/;
+        const displayPrompt = args.length === 0 || (args.length === 1 && turnOffGeoLocation);
 
         if (displayPrompt) {
             const inquirerQuestions = Object.values(options)
-                // take only questions with inquirer configs
+                // take only questions with inquirer configurations
                 .filter(v => v.inquirer)
+                // get inquirer-specific configuration
                 .map(v => v.inquirer);
 
-            const zipQuestion = inquirerQuestions.find(question => question?.name === "zip");
-            if (zipQuestion) {
-                Object.assign(zipQuestion, {default: async () => new DetectLocationZipCommand().execute()});
-            }
+            if (!turnOffGeoLocation) {
+                // add automatic geo-located default value
+                const zipQuestion = inquirerQuestions.find(question => question?.name === "zip");
+                if (zipQuestion) {
+                    Object.assign(zipQuestion, {default: async () => new DetectLocationZipCommand().execute()});
+                }
 
-            const cityQuestion = inquirerQuestions.find(question => question?.name === "city");
-            if (cityQuestion) {
-                Object.assign(cityQuestion, {default: async () => new DetectLocationCityNameCommand().execute()});
+                // add automatic geo-located default value
+                const cityQuestion = inquirerQuestions.find(question => question?.name === "city");
+                if (cityQuestion) {
+                    Object.assign(cityQuestion, {default: async () => new DetectLocationCityNameCommand().execute()});
+                }
             }
 
             const answers = await inquirer.prompt(inquirerQuestions);

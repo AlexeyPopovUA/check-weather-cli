@@ -25,7 +25,7 @@ export default class RequestHandler {
                 temperatureUnit: argv.temperature,
                 zip: argv.zip,
                 cityName: argv.city,
-                useGeolocation: !!argv.geolocation
+                useGeolocation: !argv.geolocation
             }];
         }
 

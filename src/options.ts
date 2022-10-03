@@ -33,23 +33,6 @@ const options: {[key: string]: CliOption} = {
             type: "boolean"
         }
     },
-    zip: {
-        inquirer: {
-            message: 'What\'s the <zipcode,country code>? (Example: 75015,fr)',
-            name: 'zip',
-            type: 'input',
-            // ask only if city is skipped
-            when: async (answers) => {
-                return !answers.city;
-            }
-        },
-        yargs: {
-            describe: 'Query city by a zip code or a city name',
-            alias: "z",
-            type: 'string',
-            conflicts: "city"
-        }
-    },
     city: {
         inquirer: {
             message: 'What\'s the city name?',
@@ -65,6 +48,23 @@ const options: {[key: string]: CliOption} = {
             alias: "c",
             conflicts: "zip",
             type: 'string'
+        }
+    },
+    zip: {
+        inquirer: {
+            message: 'What\'s the <zipcode,country code>? (Example: 75015,fr)',
+            name: 'zip',
+            type: 'input',
+            // ask only if city is skipped
+            when: async (answers) => {
+                return !answers.city;
+            }
+        },
+        yargs: {
+            describe: 'Query city by a zip code or a city name',
+            alias: "z",
+            type: 'string',
+            conflicts: "city"
         }
     },
     temperature: {
@@ -84,9 +84,9 @@ const options: {[key: string]: CliOption} = {
     },
     geolocation: {
         yargs: {
-            describe: 'Use geolocation',
+            describe: 'Turn off geolocation',
             alias: "g",
-            default: true,
+            default: false,
             type: "boolean"
         }
     }
